@@ -1,6 +1,5 @@
-<h1>Editing <%= singular_table_name %></h1>
-
-<%%= render 'form' %>
-
-<%%= link_to 'Show', <%= "[:#{prefix}, @#{singular_table_name}]" %> %> |
-<%%= link_to 'Back', <%= prefixed_index_helper %>_path %>
+<%%- model_class = <%= singular_table_name.classify %> -%>
+<div class="page-header">
+  <h1><%%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize %></h1>
+</div>
+<%%= render :partial => 'form' %>

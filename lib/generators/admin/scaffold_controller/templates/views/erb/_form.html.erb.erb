@@ -1,37 +1,53 @@
-<%%= form_for(<%= "[:#{prefix}, @#{singular_table_name}]" %>) do |f| %>
+<%%= form_for <%= "[:#{prefix}, @#{singular_table_name}]" %>, :html=>{:class=>"form-horizontal <%singular_table_name%>"} do |f| %>
   <%% if @<%= singular_table_name %>.errors.any? %>
-    <div id="error_explanation">
-      <h2><%%= pluralize(@<%= singular_table_name %>.errors.count, "error") %> prohibited this <%= singular_table_name %> from being saved:</h2>
-
-      <ul>
-      <%% @<%= singular_table_name %>.errors.full_messages.each do |msg| %>
-        <li><%%= msg %></li>
-      <%% end %>
-      </ul>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%%= pluralize(@<%= singular_table_name %>.errors.count, "error") %> prohibited this <%= singular_table_name %> from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <%% @<%= singular_table_name %>.errors.full_messages.each do |msg| %>
+          <li><%%= msg %></li>
+        <%% end %>
+        </ul>
+      </div>
     </div>
   <%% end %>
 
 <% attributes.each do |attribute| -%>
-  <div class="field">
 <% if attribute.password_digest? -%>
-    <%%= f.label :password %><br>
-    <%%= f.password_field :password %>
-  </div>
+  <div class="form-group">
+    <%%= f.label :password, :class=>"control-label col-lg-2"%>
+    <div class="col-lg-10">
+      <%%= f.password_field :password, :class=>"form-control" %>
+    </div>
   <div>
-    <%%= f.label :password_confirmation %><br>
-    <%%= f.password_field :password_confirmation %>
+  <div class="form-group">
+    <%%= f.label :password_confirmation, :class=>"control-label col-lg-2" %><br>
+    <div class="col-lg-10">
+    <%%= f.password_field :password_confirmation, :class=>"form-control" %>
+    </div>
+  </div>
 <% else -%>
-  <% if attribute.reference? -%>
-    <%%= f.label :<%= attribute.column_name %> %><br>
-    <%%= f.<%= attribute.field_type %> :<%= attribute.column_name %> %>
-  <% else -%>
-    <%%= f.label :<%= attribute.name %> %><br>
-    <%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>
-  <% end -%>
-<% end -%>
+  <div class="form-group">
+    <% if attribute.reference? -%>
+      <%%= f.label :<%= attribute.column_name, :class=>"control-label col-lg-2" %> %><br>
+      <div class="col-lg-10">
+        <%%= f.<%= attribute.field_type %> :<%= attribute.column_name %> %>
+      </div>
+    <% else -%>
+      <%%= f.label :<%= attribute.name, :class=>"control-label col-lg-2" %> %><br>
+      <div class="col-lg-10">
+        <%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>
+      </div>
+    <% end -%>
   </div>
 <% end -%>
-  <div class="actions">
-    <%%= f.submit %>
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%%= f.submit nil, :class=>"btn btn-primary" %>
+      <%%= link_to t('.cancel', :default=>t("helpers.links.cancel")),
+        <%=prefix_index_helper %>_path, :class=>"btn btn-default" %>
+    </div>
   </div>
 <%% end %>
